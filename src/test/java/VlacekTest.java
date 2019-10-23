@@ -37,6 +37,7 @@ class VlacekTest {
     @Test
     void test3() {
         assertTrue(vlacek.getJidelniVozy().isEmpty());
+        test2();
         assertEquals(2, vlacek.getDelkaByType(VagonekType.DRUHA_TRIDA));
         assertEquals(1, vlacek.getDelkaByType(VagonekType.PRVNI_TRIDA));
     }
