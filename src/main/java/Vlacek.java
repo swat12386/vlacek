@@ -221,25 +221,6 @@ i--;
             }
             return vysledek;
 
-/*
-            Vagonek x = najdiPosledniPrvniTridy();
-            System.out.println(x);
-            int c = x.getUmisteni() -1  ;
-            int y = 0;
-            while ( getVagonekByIndex(c+1).getType() == VagonekType.JIDELNI){
-                c++;
-            }
-
-
-            while (getVagonekByIndex(c).getType() != VagonekType.POSTOVNI){
-                c++;
-                y ++;
-            }
-
-           int vysledek = c-y;
-            return vysledek ;
-*/
-
 
         case LOKOMOTIVA:
             return 1;
