@@ -43,21 +43,23 @@ break;
             case DRUHA_TRIDA:
 
 
-
-
+                System.out.println("pridavam druhou tridu");
 
            x.setNasledujici(posledni);
            x.setPredchozi(posledni.getPredchozi());
            posledni.getPredchozi().setNasledujici(x);
            posledni.setPredchozi(x);
-            setUmisteni();
-            delka ++;
+           setUmisteni();
+           delka ++;
 break;
 
 
 case JIDELNI:
 
     pridatJidelniVagonek();
+    setUmisteni();
+    delka ++;
+
 
     break;
         }
@@ -104,14 +106,13 @@ case JIDELNI:
             case PRVNI_TRIDA:
               Vagonek vratit = najdiPosledniPrvniTridy();
 
-              break;
+              return vratit;
 
             case DRUHA_TRIDA:
 
-
         }
-           return null;
 
+return null;
     }
 
     public Vagonek najdiPosledniPrvniTridy(){
@@ -122,7 +123,7 @@ case JIDELNI:
 
             i++;
         }
-
+i--;
         return getVagonekByIndex(i);
 
     }
@@ -136,21 +137,49 @@ case JIDELNI:
     public void pridatJidelniVagonek() {
         Vagonek jidelni = new Vagonek(VagonekType.JIDELNI);
 
-        int i = 2;
+        for (int i = 0; i < delka; i++) {
 
-        while (getVagonekByIndex(i).getType() == VagonekType.PRVNI_TRIDA){
-            System.out.println("1");
-            i++;
+            if (getVagonekByIndex(i).getType() == VagonekType.JIDELNI){
+                System.out.println("tohle je druhy");
+               int x = getDelkaByType(VagonekType.DRUHA_TRIDA);
+                x= x/2;
+
+                System.out.println(x);
+                Vagonek pomocny = posledni;
+
+                for (int j = 0; j < x; j++) {
+                   pomocny = pomocny.getPredchozi();
+                }
+
+
+                        pomocny.getPredchozi().setNasledujici(jidelni);
+                        jidelni.setNasledujici(pomocny);
+                        jidelni.setPredchozi(pomocny.getPredchozi());
+                        pomocny.setPredchozi(jidelni);
+
+                        setUmisteni();
+                        delka ++;
+                        System.out.println("pridal jsem druhy jidelni");
+
+return;
+            }
+
         }
 
-        Vagonek pred = getVagonekByIndex(i);
-       pred.getPredchozi().setNasledujici(jidelni);
-       jidelni.setNasledujici(pred);
-       jidelni.setPredchozi(pred.getPredchozi());
-       jidelni.setNasledujici(pred);
-        setUmisteni();
-        delka ++;
+        System.out.println("sssss");
 
+
+        int i = 2;
+        while (getVagonekByIndex(i).getType() == VagonekType.PRVNI_TRIDA) {
+            i++;
+            if ( i == 10000){ break;
+            }
+        }
+        Vagonek x = getVagonekByIndex(i);
+        x.getPredchozi().setNasledujici(jidelni);
+        jidelni.setNasledujici(x);
+        jidelni.setPredchozi(x.getPredchozi());
+        x.setPredchozi(jidelni);
 
 
     }
@@ -168,36 +197,55 @@ case JIDELNI:
         case PRVNI_TRIDA:
 
         int i = 2;
-            while (getVagonekByIndex(i).getType() != VagonekType.PRVNI_TRIDA ){
+            while (getVagonekByIndex(i).getType() == VagonekType.PRVNI_TRIDA ){
                 i++;
+if (i == 1000){
+    break;
+}
             }
             i--;
-
+i--;
             return i;
 
         case DRUHA_TRIDA:
 
-            Vagonek x = najdiPosledniPrvniTridy();
+            int vysledek = 0 ;
 
+            for (int j = 0; j <delka ; j++) {
+
+                if (getVagonekByIndex(j).getType() == VagonekType.DRUHA_TRIDA){
+                    System.out.println("funguje to ?");
+                        vysledek ++;
+                }
+
+            }
+            return vysledek;
+
+/*
+            Vagonek x = najdiPosledniPrvniTridy();
+            System.out.println(x);
             int c = x.getUmisteni() -1  ;
             int y = 0;
-            if ( getVagonekByIndex(c).getType() == VagonekType.JIDELNI){
+            while ( getVagonekByIndex(c+1).getType() == VagonekType.JIDELNI){
                 c++;
             }
 
 
-            while (getVagonekByIndex(c).getType() != VagonekType.DRUHA_TRIDA  ){
+            while (getVagonekByIndex(c).getType() != VagonekType.POSTOVNI){
                 c++;
                 y ++;
             }
 
            int vysledek = c-y;
             return vysledek ;
+*/
+
+
+        case LOKOMOTIVA:
+            return 1;
+
 
     }
-
-
-
 
         return 0;
     }
@@ -209,7 +257,18 @@ case JIDELNI:
     public List<Vagonek> getJidelniVozy() {
         List<Vagonek> jidelniVozy = new LinkedList<>();
 
+        int help = 1;
 
+        for (int i = 0; i < delka; i++) {
+
+            if (getVagonekByIndex(help).getType() == VagonekType.JIDELNI){
+
+                jidelniVozy.add(getVagonekByIndex(help));
+
+            }
+
+            help ++;
+        }
 
         return jidelniVozy;
     }
